@@ -1,0 +1,71 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node {
+    int key;
+    struct node *left, *right;
+};
+
+struct node* newNode(int item, int depth)
+{
+    struct node* temp = (struct node*)malloc(sizeof(struct node));
+    temp->key = item;
+    temp->left = temp->right = NULL;
+    printf("%d\n", depth);
+    return temp;
+}
+
+
+struct node* insert(struct node* node, int key, int depth)
+{
+    if (node == NULL) {
+        return newNode(key, depth);
+    }
+
+    if (key < node->key) {
+        depth++;
+        node->left = insert(node->left, key, depth);
+    }
+    
+    else if (key > node->key) {
+        depth++;
+        node->right = insert(node->right, key, depth);
+    }
+
+    else if(key == node->key)
+        printf("%d\n", depth);
+
+    return node;
+}
+
+// Driver Code
+int main()
+{
+
+    int input, depth =0;
+    struct node* root = NULL;
+
+    while(scanf("%d", &input)>0)
+         root = insert(root, input,depth);
+
+    return 0;
+}
+
+Uvažujte binárny vyhľadávací strom. Na vstupe je daných niekoľko čísel, ktoré postupne vkladáte do tohto stromu. Strom nevyvažujte. Pre každé číslo zistite, ako hlboko je v strome uložené. Ak sa číslo v strome nenachádza, tak ho najprv pridajte do stromu.
+
+Špecifikácia vstupu: Na vstupe je niekoľko čísel, ktoré postupne vkladáte do stromu. Čísla sú oddelené medzerou alebo novým riadkom.
+
+Špecifikácia výstupu: Pre každé číslo na vstupe vypíšte jedno číslo -- ako hlboko je dané číslo uložené v strome.
+
+Ukážka vstupu:
+5
+3
+2
+1
+3
+Výstup pre ukážkový vstup:
+0
+1
+2
+3
+1
