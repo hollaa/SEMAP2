@@ -1,0 +1,63 @@
+/*
+Napíšte algoritmus, ktorý nájde K-te (1 <= K <= 100 000) prvočíslo v poradí od najmenších (pozn. prvé je 2).
+
+Štandardný vstup obsahuje niekoľko riadkov, na každom z nich bude jedno číslo K. Pre každý riadok na vstupe vypíšte na štandardný výstup práve jedno číslo -- K-te prvočíslo.
+
+Ukážka vstupu:
+1
+2
+3
+4
+10
+Výstup pre ukážkový vstup:
+
+    
+2
+3
+5
+7
+29
+*/
+
+
+// uloha1-2.c -- Alica Hollá
+
+#include <stdio.h>
+#include<stdlib.h>
+#define MAX  1299709  //to je to 100 000te prvocislo
+
+int *sito(){
+
+    int prime=0;//pocitadlo pre prvocisla
+    int *prvocisla = (int*) calloc(MAX, sizeof(int));
+    int *pole = (int*) calloc (MAX, sizeof(int));
+
+    for(int i=2; i<MAX; i++){
+
+        if(pole[i] == 0){
+            prvocisla[prime] = i;
+            prime++;
+            for(int p = i; p<MAX; p = p+i){ //pozeram na nasobky prvocisla
+                pole[p] = 1;
+            }
+        }
+    }
+    free(pole);
+    return prvocisla;
+}
+
+int main ()
+{
+    int k;
+    int *prvocisla = sito();
+
+    while((scanf("%d", &k)) == 1){
+        if(k<1 || k>100000)
+            break;
+
+        printf("%d\n", prvocisla[k-1]);
+    }
+
+    free(prvocisla);
+    return 0;
+}
