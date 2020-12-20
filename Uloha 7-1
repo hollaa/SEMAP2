@@ -1,0 +1,94 @@
+#include<stdio.h>
+#include <string.h>
+
+void otocRetazec(char str[], int dlzka){ //funkcia na otocenie retazca 
+    int temp = 0, zaciatok = 0, koniec = dlzka -1;
+    while (zaciatok < koniec)
+    {
+        temp = str[zaciatok];   
+        str[zaciatok] = str[koniec];
+        str[koniec] = temp;
+        zaciatok++;
+        koniec--;
+    }    
+}
+
+int JeToPalindrom(char str[]) //hned na zaciatku vyhodnotim ci je to palindrom, ak ano tak mozem prejst na dalsi retazec
+{
+    int zaciatok = 0, temp =0 ;
+    int koniec = strlen(str) - 1; //koniec palindromu predsavuje jeho dlzka - 1 pre znak \0
+
+    while (koniec > zaciatok) //pretoze koniec budeme zmensovat a zaciatok zvysovat cim sa postupne dostaneme do stredu palindromu
+    {
+        if (str[zaciatok++] != str[koniec--])
+            temp++; //je to pomocna pomocou ktorej zistim ze vlastne slovo nie je palindrom, hodilo by sa mi tu teraz tiez funkciu zastavit,
+    }
+    if(temp == 0) return 0; //ak sa pomocna premenna nikdy nezvisila tak vieme ze slovo je palindrom
+    else return 1;
+}
+
+int max(int a, int b) { //funkcia na najdenie vacsieho cisla
+    return (a > b) ? a : b;
+}
+
+int longest(char *string, char *reverse, int dlzka, int dlzka2)
+{
+    int najdlhsie[dlzka+1][dlzka+1];
+
+    for (int i=0; i<=dlzka; i++)
+    {
+        for (int j=0; j<=dlzka2; j++)
+        {
+            if (i == 0 || j == 0) //nastavenie prveho indexu na nulu
+                najdlhsie[i][j] = 0;
+
+            else if (string[i-1] == reverse[j - 1])
+                najdlhsie[i][j] = najdlhsie[i-1][j-1] + 1; //zistime kolko znakov sa najviac rovna
+
+            else
+                najdlhsie[i][j] = max(najdlhsie[i-1][j], najdlhsie[i][j-1]); //zistime kedy bude postupnost najdlhsie rovna
+        }
+    }
+    return najdlhsie[dlzka][dlzka2]; //dostaneme hodnotu, kolko znakov sa najviac rovna
+}
+
+int minInsertion(char str[], int dlzka)
+{
+    char rev[dlzka+1]; //nove pole, ktore ma velkost nacitaneho slova
+    strcpy(rev, str); //spoji retazce dokopy
+    otocRetazec(rev, dlzka);
+    return (dlzka - longest(str, rev, dlzka, dlzka)); //od celkoveho poctu znakov odratame pocet znakov ktore sa rovnaju
+
+}
+
+int main()
+{
+    // FILE *f=stdin;
+    char slovo[1000];
+
+    while ((fscanf(stdin,"%s",slovo))!=EOF){
+        if(JeToPalindrom(slovo)==0) printf("0\n"); //ulahci nam to robotu, ze potom ked zisti ze je to palindrom tak nemusi dalej s tym retazcom nic robit, hoci vieme ze aj druha funkcia by nam povedala ze netreba ziadny znak doplnit pre vznik palindromu
+        else{
+            int dlzka = strlen(slovo); //dlzka nacitaneho retazcu
+            printf("%d\n", minInsertion(slovo, dlzka));
+        }
+    }
+    return 0;
+}
+
+//
+Špecifikácia vstupu: Na vstupe je zadaných niekoľko správ, čítajte do konca vstupu. Každá správa je reťazec malých písmen anglickej abecedy dlhý najviac 1000 znakov.
+
+Špecifikácia výstupu: Pre každú správu na vstupe vypíšte jedno číslo na samostatný riadok -- najmenší počet písmenok, ktoré je potrebné do správy doplniť, aby bola palindrómom.
+
+Ukážka vstupu:
+aab
+aaba
+aabaa
+aababca
+Výstup pre ukážkový vstup:
+1
+1
+0
+2
+//
