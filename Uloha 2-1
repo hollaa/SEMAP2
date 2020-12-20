@@ -1,0 +1,44 @@
+/* Na vstupe je zadané kladné celé číslo N, ktorú určuje koľko krát sa Jakubko hral. Nasleduje N čisel identifikujúcich jednotlivé zvieratká, s ktorými sa v danom momente hral. Vypište obsah poličky po tom, ako sa Jakubko dohrá s posledným zvieratkom.
+
+Ukážka vstupu:
+4
+3 2 1 3
+Výstup pre ukážkový vstup:
+3 1 2
+*/
+
+
+#include<stdio.h>
+#include <stdlib.h>
+
+int main(){
+
+    int *zaciatok, n, *hracky, pocet=0, temp; //temp znamena ze tam hracka uz bola
+    scanf("%d", &n);
+
+    hracky = (int*) calloc (n, sizeof(int));
+    zaciatok = (int*) calloc (n, sizeof(int));
+    for(int i=0; i<n; i++){
+        scanf("%d", &hracky[i]);
+    }
+
+    for(int j=n-1; j>=0; j--){
+        for(int k = 0; k<n; k++){
+            if(hracky[j] == zaciatok[k]){
+                temp = 1; //tato hracka je uz na policke
+            }
+        }
+
+        if(temp == 0){
+            zaciatok[pocet] = hracky[j]; // ukladam ich na policku
+            pocet++; 
+        }
+        temp = 0;
+    }
+
+     for(int i=0; i< pocet; i++){
+        printf("%d ", zaciatok[i]);
+    }
+
+    return 0;
+}
