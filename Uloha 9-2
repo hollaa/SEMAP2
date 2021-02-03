@@ -1,0 +1,84 @@
+#include <stdio.h>
+#include <string.h>
+
+void najdlhsiP(char str[])
+{
+    int maxDlzka=0; //momentalne je maximalna dlzka nastavena len na 1, pretoze to je najkratsi mozny palindrom
+
+    int dlzka = strlen(str); //dlzka zadaneho slova
+    int j=0;
+    int k=0;
+
+    int zaciatokP, koniecP;
+    char pomocny[100000];
+
+    for(int i=0; i<dlzka; i++){
+
+            //string s parnym poctom znakov
+             //premenne pre najdenie stredu
+             zaciatokP = i;
+             koniecP = i;
+
+             while (zaciatokP >= 0 && koniecP < dlzka && str[zaciatokP] == str[koniecP]) { //kym sa znaky pre porovnavanie nachadzaju v retazci a zaroven sa rovnaju
+
+                 if ((koniecP - zaciatokP + 1) > maxDlzka) {
+                     maxDlzka = koniecP - zaciatokP + 1; //maximalna dlzka sa zmeni na dlzku palindromu
+                     k = 0; //zmaze pole, ktore bolo pred tym naplnene kratsim palindromom
+                 }
+
+                 if ((koniecP - zaciatokP + 1) == maxDlzka) {
+                     int p = 0;
+                     for (j = k; p < maxDlzka; j++) {
+                         pomocny[j] = str[zaciatokP + p];
+                         k++;
+                         p++;
+                     }
+
+                     pomocny[j] = ' ';
+                     k++;
+                 }
+
+                 zaciatokP--;
+                 koniecP++;
+             
+             }
+             
+            //neparny pocet znakov
+             zaciatokP = i;
+             koniecP = i + 1;
+
+             while (zaciatokP >= 0 && koniecP < dlzka && str[zaciatokP] ==str[koniecP]) { //kym sa znaky pre porovnavanie nachadzaju v retazci a zaroven sa rovnaju
+
+                 if ((koniecP - zaciatokP + 1) > maxDlzka) {
+                     maxDlzka = koniecP - zaciatokP + 1; //maximalna dlzka sa zmeni na dlzku palindromu
+                     k = 0;
+                 }
+
+                 if ((koniecP - zaciatokP + 1) == maxDlzka) { //ak sme dosiahli maximalnu dlzku tak mozeme zacat zapisovat do pomocneho pola, ktore neskor printneme
+                     int p = 0;
+                     for (j = k; p < maxDlzka; j++) {
+                         pomocny[j] = str[zaciatokP + p];
+                         k++;
+                         p++;
+                     }
+
+                     pomocny[j] = ' ';
+                     k++;
+                 }
+
+                 zaciatokP--;
+                 koniecP++;
+             }
+    }
+
+    pomocny[j] = '\0';
+    printf("%d \n", maxDlzka);
+
+}
+int main(){
+
+    char string[195017];
+    while(scanf("%s", string) > 0) //nacitavame dokym mame nejaky vstup
+            najdlhsiP(string);
+    return 0;
+}
