@@ -1,0 +1,72 @@
+// uloha5-1.c -- Alica Hollá, 15.10.2020 10:20
+// vstupne pole som najskor vysortovala podla abecedy a potom uz len som zistovala ci sa prvky vedla seba v poli rovnaju
+// zdroj na sort podla abecedy: https://www.geeksforgeeks.org/c-program-sort-array-names-strings/
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+// Defining comparator function as per the requirement 
+static int myCompare(const void* a, const void* b) 
+{ 
+    // setting up rules for comparison 
+    return strcmp(*(const char**)a, *(const char**)b); 
+} 
+// Function to sort the array 
+void sort(char* arr[], int n) 
+{ 
+    qsort(arr, n, sizeof(const char*), myCompare); 
+}
+int vyhadzovac(char *a[], int n) 
+{
+    sort(a, n);
+   int dupl = 0;
+	for(int i = 0; i < n - 1; i++){
+		if(!strcmp(a[i], a[i+1])){
+			dupl++;
+		}
+	}
+
+    return dupl;
+}
+
+// ukazkovy test
+int main(void)
+{
+    char **a = NULL, buf[100];
+    int n = 0, len = 0;
+
+    // nacitanie retazcov
+    while (scanf("%s", buf) > 0)
+    {
+        if (n == len)
+        {
+            len = len + len + (len == 0);
+            a = (char**)realloc(a, len * sizeof(char*));
+        }
+        a[n++] = strdup(buf);
+    }
+
+    printf("Pocet duplikatov: %d\n", vyhadzovac(a, n));
+    return 0;
+}
+
+Na vstupe je daná postupnosť reťazcov (identifikátorov občianskych preukazov), v poradí ako sa nimi návštevníci preukazujú. Vašou úlohou je zistiť počet, koľko z nich sa pokúšali použiť opakovane. Číslo OP je reťazec čísel a písmen, môžu byť rôzne dlhé. Riešenie musí pracovať v optimálnej očakávanej časovej zložitosti O(N), kde N je počet čísel občianskych preukazov na vstupe. Identifikátor občianskeho preukazu môže byť ľubovoľný reťazec písmen a číslic.
+
+Naprogramujte funkciu v nasledovnom tvare:
+
+// spracuje cisla OP: vrati pocet najdenych duplikatov.
+int vyhadzovac(char *a[], int n)
+{
+  // ...
+}
+Poznámka: Všetky potrebné operácie by ste mali implementovať vlastnými silami. Pomalšie ako optimálne lineárne riešenie nesplní časový limit v testovači.
+
+Napr. pre čísla OP:
+AA123456
+BA987689
+AA123123
+AA312312
+BB345345
+AA123123
+je
+Pocet duplikatov: 1
