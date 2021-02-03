@@ -1,0 +1,69 @@
+// uloha8-1.c -- Alica Hollá, 4.11.2020 14:52
+//vzorec na tazisko polygonu som pouzila zo zdroja: https://bell0bytes.eu/centroid-convex/#:~:text=To%20compute%20the%20centroid%20C,%3D1%20w%205%20%3D%201%20.
+
+#include <stdio.h>
+
+void tazisko(double suradniceX[], double suradniceY[], int velkost){
+
+    double menovatel = 0, w;
+    double citatelX = 0;
+    double citatelY = 0;
+    double vysledokX, vysledokY;
+    for(int i = 0; i<velkost-1; i++){
+        w= (suradniceX[i] * suradniceY[i+1]) - (suradniceX[i+1] * suradniceY[i]);
+        citatelX += (suradniceX[i] + suradniceX[i+1]) * w;
+        citatelY += (suradniceY[i] + suradniceY[i+1]) * w;
+        menovatel += w;
+    }
+    w = (suradniceX[velkost-1] * suradniceY[0]) - (suradniceY[velkost-1] * suradniceX[0]);
+    citatelX +=  (suradniceX[velkost-1]+suradniceX[0]) * w;
+    citatelY +=  (suradniceY[velkost-1]+suradniceY[0]) * w;
+    menovatel += w;
+
+    
+    vysledokX = citatelX / (menovatel*3);
+    vysledokY = citatelY / (menovatel *3);
+
+    printf("%.3lf %.3lf", vysledokX, vysledokY);
+
+}
+
+
+int main()
+{
+    int pocet;
+    double suradniceX[1000];
+    double suradniceY[1000];
+    scanf("%d", &pocet);
+    if(pocet > 1000)
+        return 0;
+
+    for(int i = 0; i<pocet; i++){
+            scanf("%lf %lf", &suradniceX[i], &suradniceY[i]);
+    }
+
+   tazisko(suradniceX, suradniceY, pocet);
+
+    return 0;
+}
+
+Jakubko sa začal venovať vyrezávaniu drevených dekorácií všakovakých tvarov. Zatiaľ len začína, a tvary ktoré vyrezáva sú ploché dosky tvaru mnohouholníka s N < 1000 vrcholmi. Po vytvorení dekorácie by ju chcel zavesiť na šnúrku tak, aby zo stropu visela vodorovne. Šnúrku upevní v ťažisku klinčekom. Pri komplikovanejších tvaroch sa mu stáva, že do ťažiska nemôže klinček priklincovať pretože sa ťažisko jednoducho nenachádza vo vnútri tohto mnohouholníka (je tam vzduch).
+
+Pomôžte Jakubkovi a pre mnohouholník na vstupe určite súradnice ťažiska.
+
+Vstup: Štandardný vstup obsahuje zápis vyrezanej drevenej dekorácie v tvare mnohouholníka. Na prvom riadku je celé číslo N (do 1000) počet vrcholov, a nasleduje N dvojíc celých čísel: x-ová a y-ová súradnica i-teho vrcholu, pričom vrcholy sú uvedené v poradí ako idú po obvode.
+
+Výstup: Na štandardný výstup vypíšte súradnice ťažiska mnohouholníka na vstupe, zaokrúhlené na tri desatinné miesta.
+
+Ukážka vstupu:
+8
+0 0
+3 0
+3 3
+2 3
+2 1
+1 1
+1 3
+0 3
+Výstup pre ukážkový vstup:
+1.500 1.357
